@@ -1,13 +1,19 @@
 require("dotenv").config();
 
 const express = require("express");
+const bodyParser = require("body-parser");
 
-const { getPlayersRankings } = require("./ranking");
+const {
+  getPlayers,
+  getPlayersRankings,
+  updateRankingWithMatch
+} = require("./ranking");
 
 const app = express();
 const port = 3000;
 
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => res.render("index"));
 
@@ -21,27 +27,14 @@ app.get("/ranks", async (req, res) => {
   res.render("ranks", { ranking: playersByRank });
 });
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.get("/matches/new", async (req, res) => {
+  const players = await getPlayers();
+  res.render("matches/new", { players });
+});
 
-// eslint-disable-next-line no-unused-vars
-async function getMatches() {
-  return [
-    [["PATO 1"], ["PATO 3"], ["PATO 4"]],
-    [["PATO 1"], ["PATO 4"], ["PATO 3"]],
-    [["PATO 4"], ["PATO 1"], ["PATO 5"]],
-    [["PATO 3"], ["PATO 1", "PATO 5"]]
-  ];
-}
+app.post("/matches", async (req, res) => {
+  updateRankingWithMatch(req.body);
+  res.redirect("/ranks");
+});
 
-// eslint-disable-next-line no-unused-vars
-function applyMatchesToRankings(ranking, players, matches) {
-  const races = matches.map(match =>
-    ranking.makeRace(
-      match.map(playersInPosition =>
-        playersInPosition.map(playerId => players[playerId])
-      )
-    )
-  );
-
-  ranking.updateRatings(races.flatMap(race => race.getMatches()));
-}
+app.listen(port, () => console.log(`App listening on port ${port}!`));

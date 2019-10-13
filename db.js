@@ -28,4 +28,8 @@ async function getPlayers() {
   });
 }
 
-module.exports = { getPlayers };
+async function updatePlayers(updatedPlayersData) {
+  console.log({ updatePlayers: updatedPlayersData });
+}
+
+module.exports = { getPlayers, updatePlayers };

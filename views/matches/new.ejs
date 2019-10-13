@@ -1,0 +1,80 @@
+<h1>New match</h1>
+
+<form method="post" action="/matches">
+  <div>
+    First:
+    <select name="first" required>
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    Second:
+    <select name="second">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="second">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="second">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    Third:
+    <select name="third">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="third">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="third">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div>
+    Fourth:
+    <select name="fourth">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="fourth">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+    <select name="fourth">
+      <option value=""></option>
+      <% players.forEach(player => { %>
+        <option value="<%= player.id %>"><%= player.id %></option>
+      <% }); %>
+    </select>
+  </div>
+
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
