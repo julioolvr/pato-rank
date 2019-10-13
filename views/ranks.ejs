@@ -1,5 +1,5 @@
 <ol>
   <% ranking.forEach(player => { %>
-    <li><%= player.name %>: <%= player.score %></li>
+    <li><%= player.id %>: <%= player.glicko.getRating() %> <%= player.glicko.getRd() %> <%= player.glicko.getVol() %></li>
   <% }); %>
 </ol>

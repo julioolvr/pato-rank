@@ -13,7 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "ejs": "^2.7.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "glicko2": "^0.8.4",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "nodemon": "^1.19.3"
