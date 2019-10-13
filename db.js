@@ -17,7 +17,7 @@ async function getPlayers() {
 
         resolve(
           records.map(record => ({
-            id: record.get("name"),
+            id: record.id,
             name: record.get("name"),
             rating: record.get("rating"),
             rd: record.get("rd"),
@@ -29,7 +29,15 @@ async function getPlayers() {
 }
 
 async function updatePlayers(updatedPlayersData) {
-  console.log({ updatePlayers: updatedPlayersData });
+  return new Promise((resolve, reject) => {
+    base("Players").update(
+      updatedPlayersData.map(data => ({
+        id: data.id,
+        fields: { rating: data.rating, rd: data.rd, vol: data.vol }
+      })),
+      err => (err ? reject(err) : resolve())
+    );
+  });
 }
 
 module.exports = { getPlayers, updatePlayers };

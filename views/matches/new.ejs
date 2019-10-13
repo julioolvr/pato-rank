@@ -3,75 +3,25 @@
 <form method="post" action="/matches">
   <div>
     First:
-    <select name="first" required>
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
+    <%- include('playerSelect', { position: 'first', players }) %>
   </div>
   <div>
     Second:
-    <select name="second">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="second">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="second">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
+    <%- include('playerSelect', { position: 'second', players }) %>
+    <%- include('playerSelect', { position: 'second', players }) %>
+    <%- include('playerSelect', { position: 'second', players }) %>
   </div>
   <div>
     Third:
-    <select name="third">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="third">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="third">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
+    <%- include('playerSelect', { position: 'third', players }) %>
+    <%- include('playerSelect', { position: 'third', players }) %>
+    <%- include('playerSelect', { position: 'third', players }) %>
   </div>
   <div>
     Fourth:
-    <select name="fourth">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="fourth">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
-    <select name="fourth">
-      <option value=""></option>
-      <% players.forEach(player => { %>
-        <option value="<%= player.id %>"><%= player.id %></option>
-      <% }); %>
-    </select>
+    <%- include('playerSelect', { position: 'fourth', players }) %>
+    <%- include('playerSelect', { position: 'fourth', players }) %>
+    <%- include('playerSelect', { position: 'fourth', players }) %>
   </div>
 
   <div>

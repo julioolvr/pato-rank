@@ -1,0 +1,6 @@
+<select name="<%= position %>">
+  <option value=""></option>
+  <% players.forEach(player => { %>
+    <option value="<%= player.id %>"><%= player.name %></option>
+  <% }); %>
+</select>

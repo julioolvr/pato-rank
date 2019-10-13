@@ -6,16 +6,23 @@ const db = require("./db");
 /**
  * @typedef {object} Player
  * @property {string} id
+ * @property {string} name
  * @property {number} rating
  * @property {number} rd Rating deviation
  * @property {number} vol Volatility
  */
 
 /**
+ * @typedef {object} PlayerWithGlicko
+ * @property {Player} data
+ * @property {object} glicko Glicko player object
+ */
+
+/**
  * Returns an object where keys are the player ids and values
- * are their respective player objects from Glicko's ranking
+ * are their respective player objects
  *
- * @returns {Object.<string, object>} Ranked players
+ * @returns {Object.<string, Player>} Ranked players
  */
 async function getPlayersRankings() {
   return (await buildRanking()).players;
@@ -34,10 +41,10 @@ async function updateRankingWithMatch(match) {
   const { ranking, players } = await buildRanking();
 
   const race = ranking.makeRace([
-    [players[match.first]],
-    match.second.filter(Boolean).map(playerId => players[playerId]),
-    match.third.filter(Boolean).map(playerId => players[playerId]),
-    match.fourth.filter(Boolean).map(playerId => players[playerId])
+    [players[match.first].glicko],
+    match.second.filter(Boolean).map(playerId => players[playerId].glicko),
+    match.third.filter(Boolean).map(playerId => players[playerId].glicko),
+    match.fourth.filter(Boolean).map(playerId => players[playerId].glicko)
   ]);
 
   ranking.updateRatings(race);
@@ -47,14 +54,12 @@ async function updateRankingWithMatch(match) {
     .concat(match.third.filter(Boolean))
     .concat(match.fourth.filter(Boolean));
 
-  console.log({ players });
-
-  db.updatePlayers(
+  return db.updatePlayers(
     updatedPlayers.map(playerId => ({
       id: playerId,
-      rating: players[playerId].getRating(),
-      rd: players[playerId].getRd(),
-      vol: players[playerId].getVol()
+      rating: players[playerId].glicko.getRating(),
+      rd: players[playerId].glicko.getRd(),
+      vol: players[playerId].glicko.getVol()
     }))
   );
 }
@@ -78,11 +83,12 @@ async function buildRanking() {
 
   const playersRanking = _.mergeAll(
     playersData.map(player => ({
-      [player.id]: ranking.makePlayer(player.rating, player.rd, player.vol)
+      [player.id]: {
+        data: player,
+        glicko: ranking.makePlayer(player.rating, player.rd, player.vol)
+      }
     }))
   );
-
-  console.log("buildRanking", { ranking });
 
   return {
     ranking,

@@ -20,9 +20,9 @@ app.get("/", (req, res) => res.render("index"));
 app.get("/ranks", async (req, res) => {
   const players = await getPlayersRankings();
 
-  const playersByRank = Object.keys(players)
-    .map(key => ({ id: key, glicko: players[key] }))
-    .sort((a, b) => (a.glicko.getRating() > b.glicko.getRating() ? -1 : 1));
+  const playersByRank = Object.values(players).sort((a, b) =>
+    a.glicko.getRating() > b.glicko.getRating() ? -1 : 1
+  );
 
   res.render("ranks", { ranking: playersByRank });
 });
@@ -33,8 +33,7 @@ app.get("/matches/new", async (req, res) => {
 });
 
 app.post("/matches", async (req, res) => {
-  updateRankingWithMatch(req.body);
-  res.redirect("/ranks");
+  updateRankingWithMatch(req.body).then(() => res.redirect("/ranks"));
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
