@@ -1,27 +1,30 @@
 declare module "airtable" {
   function configure({ apiKey: string }): void;
 
-  function base(baseId: string): BaseGetter;
-  type BaseGetter = (baseName: string) => Base;
+  function base(baseId: string): BaseGetterFunction;
+  type BaseGetterFunction = <RecordType>(baseName: string) => Base<RecordType>;
 
-  // TODO: Maybe this can be typed w/ generics, i.e. Base<RecordType>
-  class Base {
-    select: () => BaseSelection;
+  class Base<RecordType> {
+    select: () => BaseSelection<RecordType>;
     update: (
-      updates: Array<{ id: string; fields: object }>,
+      updates: Array<{ id: string; fields: Partial<RecordType> }>,
       callback: UpdateCallback
     ) => void;
   }
 
-  type SelectionCallback = (err: Error, records: Array<Record>) => void;
+  type SelectionCallback<RecordType> = (
+    err: Error,
+    records: Array<Record<RecordType>>
+  ) => void;
   type UpdateCallback = (err: Error) => void;
 
-  class BaseSelection {
-    firstPage: (callback: SelectionCallback) => void;
+  class BaseSelection<RecordType> {
+    firstPage: (callback: SelectionCallback<RecordType>) => void;
   }
 
-  class Record {
+  class Record<Fields> {
     id: string;
+    // TODO: Use Fields to properly type this fn
     get: (key: string) => any;
   }
 }
