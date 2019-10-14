@@ -1,43 +1,40 @@
 const _ = require("ramda");
-const glicko = require("glicko2");
+import glicko = require("glicko2");
 
 const db = require("./db");
 
-/**
- * @typedef {object} Player
- * @property {string} id
- * @property {string} name
- * @property {number} rating
- * @property {number} rd Rating deviation
- * @property {number} vol Volatility
- */
+type PlayerData = {
+  id: string;
+  name: string;
+  rating: number;
+  rd: number;
+  vol: number;
+};
 
-/**
- * @typedef {object} PlayerWithGlicko
- * @property {Player} data
- * @property {object} glicko Glicko player object
- */
+export type PlayerWithGlicko = {
+  data: PlayerData;
+  glicko: glicko.Player;
+};
 
 /**
  * Returns an object where keys are the player ids and values
  * are their respective player objects
- *
- * @returns {Object.<string, Player>} Ranked players
  */
-async function getPlayersRankings() {
+export async function getPlayersRankings(): Promise<{
+  [key: string]: PlayerWithGlicko;
+}> {
   return (await buildRanking()).players;
 }
 
 /**
  * Returns a list of up to 100 players, with their id/name, rating, rating deviation,
  * and volatility
- * @returns {Array<Player>}
  */
-async function getPlayers() {
+export async function getPlayers(): Promise<Array<PlayerData>> {
   return db.getPlayers();
 }
 
-async function updateRankingWithMatch(match) {
+export async function updateRankingWithMatch(match) {
   const { ranking, players } = await buildRanking();
 
   const race = ranking.makeRace([
@@ -64,13 +61,10 @@ async function updateRankingWithMatch(match) {
   );
 }
 
-module.exports = {
-  getPlayers,
-  getPlayersRankings,
-  updateRankingWithMatch
-};
-
-async function buildRanking() {
+async function buildRanking(): Promise<{
+  ranking: glicko.Glicko2;
+  players: { [key: string]: PlayerWithGlicko };
+}> {
   const rankingSettings = {
     tau: 0.5,
     rating: 1500,

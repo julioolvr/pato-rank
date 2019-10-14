@@ -1,4 +1,4 @@
-const Airtable = require("airtable");
+import Airtable = require("airtable");
 
 Airtable.configure({
   apiKey: process.env.AIRTABLE_SECRET_KEY

@@ -1,13 +1,13 @@
 require("dotenv").config();
 
-const express = require("express");
-const bodyParser = require("body-parser");
-
-const {
+import express = require("express");
+import bodyParser = require("body-parser");
+import {
   getPlayers,
   getPlayersRankings,
-  updateRankingWithMatch
-} = require("./ranking");
+  updateRankingWithMatch,
+  PlayerWithGlicko
+} from "./ranking";
 
 const app = express();
 const port = 3000;
@@ -18,7 +18,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.render("index"));
 
 app.get("/ranks", async (req, res) => {
-  const players = await getPlayersRankings();
+  const players: {
+    [key: string]: PlayerWithGlicko;
+  } = await getPlayersRankings();
 
   const playersByRank = Object.values(players).sort((a, b) =>
     a.glicko.getRating() > b.glicko.getRating() ? -1 : 1
